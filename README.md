@@ -60,6 +60,11 @@ Separates complex mathematical logic (date calculations, currency formatting) fr
 
 ## 🧠 Challenges Faced
 
+* **State Persistence (Requirement)**
+Ensuring data wasn't lost on page refresh was critical.
+* **Solution:** I implemented a `localStorage` sync mechanism inside the Context provider. The state lazily initializes from browser storage on load and utilizes a `useEffect` hook to automatically persist updates whenever the invoice list changes.
+
+
 * **Handling Large Datasets (Performance)**
 When implementing the "Generate 500 Invoices" feature, the app initially froze because I was updating the state 500 times in a loop.
 * **Solution:** I implemented a **Batch Update Strategy** (`addBulkInvoices`) to construct the data array in memory first and update the React state only once.
