@@ -9,12 +9,12 @@ A robust, responsive React application designed to help **MSME (Micro, Small & M
 
 ## ✨ Key Features
 
-* **📊 Smart Analytics:** Real-time calculation of Total Outstanding, Overdue amounts, Monthly Collections, and Average Payment Delay.
-* **⚡ Bulk Data Generator:** A stress-testing tool capable of generating **500+ realistic invoices** instantly to test performance and pagination.
-* **📄 Dynamic Pagination:** Efficiently browse large datasets with customizable rows per page (5, 10, 20, 50, 100).
-* **🖨️ PDF Generation:** Client-side generation of professional invoice PDFs ready for download.
-* **🌙 Dark Mode:** Fully responsive UI with a seamless dark/light theme toggle.
-* **🛡️ Form Validation:** Strict validation ensuring no negative amounts or missing critical data.
+* 📊 **Smart Analytics:** Real-time calculation of Total Outstanding, Overdue amounts, Monthly Collections, and Average Payment Delay.
+* ⚡ **Bulk Data Generator:** A stress-testing tool capable of generating **500+ realistic invoices** instantly to test performance and pagination.
+* 📄 **Dynamic Pagination:** Efficiently browse large datasets with customizable rows per page (5, 10, 20, 50, 100).
+* 🖨️ **PDF Generation:** Client-side generation of professional invoice PDFs ready for download.
+* 🌙 **Dark Mode:** Fully responsive UI with a seamless dark/light theme toggle.
+* 🛡️ **Form Validation:** Strict validation ensuring no negative amounts or missing critical data.
 
 ---
 
@@ -47,37 +47,29 @@ npm run dev
 
 I adopted a **modular component-based architecture** to ensure maintainability and scalability:
 
-* **Context API (`InvoiceContext`)**
-Acts as the "single source of truth" for application state. It handles CRUD operations, bulk data insertion, and complex business logic globally.
-* **Presentational Components (`InvoiceTable`, `SummaryCards`)**
-Pure components that receive data via props, making them highly reusable and easy to test.
-* **Smart Containers (`App.jsx`)**
-Handles the wiring of logic, state filtering, pagination, and layout composition.
-* **Utility Layer (`utils/analytics.js`)**
-Separates complex mathematical logic (date calculations, currency formatting) from UI code to keep components clean.
+* **Context API (`InvoiceContext`)**: Acts as the "single source of truth" for application state. It handles CRUD operations, bulk data insertion, and complex business logic globally.
+* **Presentational Components (`InvoiceTable`, `SummaryCards`)**: Pure components that receive data via props, making them highly reusable and easy to test.
+* **Smart Containers (`App.jsx`)**: Handles the wiring of logic, state filtering, pagination, and layout composition.
+* **Utility Layer (`utils/analytics.js`)**: Separates complex mathematical logic (date calculations, currency formatting) from UI code to keep components clean.
 
 ---
 
 ## 🧠 Challenges Faced
 
-* **State Persistence (Requirement)**
-Ensuring data wasn't lost on page refresh was critical.
+* **State Persistence (Requirement)**: Ensuring data wasn't lost on page refresh was critical.
 * **Solution:** I implemented a `localStorage` sync mechanism inside the Context provider. The state lazily initializes from browser storage on load and utilizes a `useEffect` hook to automatically persist updates whenever the invoice list changes.
 
 
-* **Handling Large Datasets (Performance)**
-When implementing the "Generate 500 Invoices" feature, the app initially froze because I was updating the state 500 times in a loop.
+* **Handling Large Datasets (Performance)**: When implementing the "Generate 500 Invoices" feature, the app initially froze because I was updating the state 500 times in a loop.
 * **Solution:** I implemented a **Batch Update Strategy** (`addBulkInvoices`) to construct the data array in memory first and update the React state only once.
 
 
-* **Accurate Analytics Logic**
-Initially, the "Average Delay" and "Collected" cards showed "0" because the app wasn't tracking *when* a payment occurred.
+* **Accurate Analytics Logic**: Initially, the "Average Delay" and "Collected" cards showed "0" because the app wasn't tracking when a payment occurred.
 * **Solution:** I updated the data model to include a specific `paymentDate` field that is automatically set when an invoice is marked as "Paid".
 
 
-* **Date Handling**
-Managing timezones and calculating "days remaining" accurately was challenging.
-* **Solution:** I solved this by normalizing all dates to midnight strings (`YYYY-MM-DD`) before comparison to ensure consistency.
+* **Date Handling**: Managing timezones and calculating "days remaining" accurately was challenging.
+* **Solution:** I solved this by normalizing all dates to midnight strings (`YYYY-MM-DD`) before comparison.
 
 
 
@@ -93,7 +85,7 @@ Managing timezones and calculating "days remaining" accurately was challenging.
 ### 2. Memoization (`useMemo`)
 
 * **Where:** In `App.jsx` for search/filter/pagination logic and `SummaryCards.jsx` for total calculations.
-* **Why:** Calculating totals and filtering large lists on every render is computationally expensive. `useMemo` ensures these calculations only re-run when the `invoices` array actually changes, preventing lag during search input.
+* **Why:** Calculating totals and filtering large lists on every render is computationally expensive. `useMemo` ensures these calculations only re-run when the invoices array actually changes, preventing lag during search input.
 
 ### 3. Efficient DOM Updates
 
